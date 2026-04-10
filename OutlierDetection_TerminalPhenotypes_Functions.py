@@ -120,7 +120,7 @@ def ScalePlate(df):
     return df
 
 
-def SaveScaledData(df, feature_set, screen_name):
+def SaveScaledData(df, feature_set, output, screen_name):
     """ Saves scaled data for each plate."""
 
     data_scaled_columns = ['ORF', 'Gene', 'Filename', 'Column', 'Row'] + feature_set
@@ -132,7 +132,7 @@ def SaveScaledData(df, feature_set, screen_name):
                                          df['DataScaled']), axis=1)
     data_scaled_output_df = pd.DataFrame(data=data_scaled_output, columns=data_scaled_columns)
     data_scaled_output_df = data_scaled_output_df.fillna('')
-    data_scaled_output_df.to_csv(path_or_buf = screen_name + '_scaled_data.csv', index=False)
+    data_scaled_output_df.to_csv(path_or_buf = output['ScaledData'], index=False)
 
 
 def ReadAndScalePlate(filename, wt, features, screen_name, output, combine):
@@ -168,7 +168,7 @@ def ReadAndScalePlate(filename, wt, features, screen_name, output, combine):
     # Create dataframe and scale
     df = ExtractPlateInformation(input_df, feature_set, wt, screen_name, combine)
     df = ScalePlate(df)
-    SaveScaledData(df, feature_set, screen_name)
+    SaveScaledData(df, feature_set, output, screen_name)
 
     return df, feature_set
 

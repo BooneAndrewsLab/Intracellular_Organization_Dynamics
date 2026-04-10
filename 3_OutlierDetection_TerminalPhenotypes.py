@@ -90,6 +90,8 @@ output_files = {'PCAExplainedVariance':     os.path.join(path_out, screen_name +
                 'ConfusionMatrixHF':        os.path.join(path_out, screen_name + '_OD_results_confusion_matrix_HF.png'),
 
                 'ConfusionMatrixDLHF':      os.path.join(path_out, screen_name + '_OD_results_confusion_matrix_DLHF.png')
+
+                'ScaledData':               os.path.join(path_out, screen_name + '_scaled_data.csv')
 }
 
 if __name__ == '__main__':
