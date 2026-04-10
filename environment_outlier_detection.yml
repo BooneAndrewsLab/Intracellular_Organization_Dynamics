@@ -1,0 +1,33 @@
+name: OD_env
+channels:
+  - defaults
+dependencies:
+  - python=3.7
+  - tensorflow=1.14
+  - keras=2.2
+  - numpy=1.16
+  - scipy=1.3
+  - pandas=0.24.2
+  - scikit-learn=0.21
+  - scikit-image=0.15
+  - matplotlib=3.1.0
+  - jupyter
+  - jupyterlab
+  - notebook
+  - h5py
+  - pillow
+  - imageio
+  - sympy
+  - pytest
+  - spyder
+  - networkx
+  - statsmodels
+  - seaborn
+  - bokeh
+  - flask
+  - sqlalchemy
+  - nltk
+  - pyyaml
+  - pip
+  - pip:
+    - ppca==0.0.4
