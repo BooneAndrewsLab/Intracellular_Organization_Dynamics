@@ -102,6 +102,28 @@ _NOTE: The outlier detection scripts have other parameters with set default valu
 'variance', 'distance-method', 'OneClassSVM-kernel', 'OneClassSVM-gamma', and 'probability'. Users can use these 
 parameters and ran with their own custom values as needed._
 
+---
+
+### Step 3. Obtain Final Penetrance Values and Half-Max Calculations
+Activate conda environment
+```
+$ conda activate OD_env
+```
+
+Run command below to process all screens for which there are OD outputs.
+```
+Usage:
+$ python <PATH_TO_COMBINE_CP_SCRIPT> -r <OD_ROOT_DIRECTORY>
+
+Example:
+$ python 5_Determining_Half_Max.py -r test
+```
+
+_NOTE: For demo purposes, only sample genes from Atg8 have been processed. If you are processing multiple screens,
+line 362 in 5_Determining_Half_Max.py will need to be altered to include the additional screens. For reference, 
+the commented-out list includes all screens that were included in the main study._
+
+
 ### License
 This software is licensed under the [BSD 3-Clause License][BSD3]. Please see the 
 ``LICENSE`` file for more details.
