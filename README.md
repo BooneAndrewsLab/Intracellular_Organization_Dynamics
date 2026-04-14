@@ -113,7 +113,7 @@ $ conda activate OD_env
 Run command below to process all screens for which there are OD outputs.
 ```
 Usage:
-$ python <PATH_TO_COMBINE_CP_SCRIPT> -r <OD_ROOT_DIRECTORY>
+$ python <PATH_TO_PENETRANCE_HALF_MAX_SCRIPT> -r <OD_ROOT_DIRECTORY>
 
 Example:
 $ python 5_Determining_Half_Max.py -r test
