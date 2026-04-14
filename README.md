@@ -79,7 +79,7 @@ Usage:
 $ python <PATH_TO_COMBINE_CP_SCRIPT> -p <CP_OUTPUT_FOLDER> -o <OD_OUTPUT_FOLDER> -m <GENE_MAPPING_SHEET>
 
 Example:
-$ python 2_Combine_CellProfiler_Results.py -p test/cellprofiler_results/ATG_R1 -o test/OD_results/ATG_R1 -m EMA_MappingSheet.csv
+$ python 2_Combine_CellProfiler_Results.py -p test/cellprofiler_results/ATG8_R1/ -o test/OD_results/ATG8_R1/ -m EMA_MappingSheet.csv
 ```
 Run Outlier Detection script FOR EACH screen-replicate-timepoint rawdata
 ```
@@ -87,7 +87,7 @@ Usage:
 $ python <PATH_TO_OD_SCRIPT> -i <INPUT_FILE_T##_rawdata.csv> -o <OD_OUTPUT_FOLDER> -f <FEATURE_SET>
 
 Example:
-$ python 3_OutlierDetection_TerminalPhenotypes.py -i test/OD_results/ATG8_R1/2015_April_24_Atg8_R1_T00_rawdata.csv -o test/OD_results/ATG_R1 -f FeatureSets_TerminalPhenotypes.txt
+$ python 3_OutlierDetection_TerminalPhenotypes.py -i test/OD_results/ATG8_R1/2015_April_24_Atg8_R1_T00_rawdata.csv -o test/OD_results/ATG8_R1 -f FeatureSets_TerminalPhenotypes.txt
 
 ```
 Run Outlier Detection for WT
@@ -96,7 +96,7 @@ Usage:
 $ python <PATH_TO_OD_WT_SCRIPT> -p <OD_OUTPUT_FOLDER> -o <OD_OUTPUT_FOLDER> -f <FEATURE_SET>
 
 Example:
-$ python 4_OutlierDetection_WT_penetrance.py -p test/OD_results/ATG8_R1 -o test/OD_results/ATG_R1 -f FeatureSets_TerminalPhenotypes.txt
+$ python 4_OutlierDetection_WT_penetrance.py -p test/OD_results/ATG8_R1 -o test/OD_results/ATG8_R1 -f FeatureSets_TerminalPhenotypes.txt
 ```
 _NOTE: The outlier detection scripts have other parameters with set default values such as: 'threshold', 'combine-wt', 
 'variance', 'distance-method', 'OneClassSVM-kernel', 'OneClassSVM-gamma', and 'probability'. Users can use these 

@@ -141,7 +141,7 @@ def PlatesToAnalyzeForOutlierDetection():
     #This function loads up the SQL_ and support files, merges the image and object, and writes the final table to OUTFILE
 
     # Headers
-    ImageHeader, ObjectHeader = ParseSQLSETUP(PATH_USE + 'SQL_SETUP.SQL')
+    ImageHeader, ObjectHeader = ParseSQLSETUP(PATH_USE + '/SQL_SETUP.SQL')
 
     # Genes
     Df_GeneNames = pd.read_csv(MAPPING_SHEET, index_col=None)
@@ -172,21 +172,6 @@ def PlatesToAnalyzeForOutlierDetection():
             print("writing plate:", plate)
             plates_to_analyze = WriteCurrent(df_plate, [plate], cols_order_use, plates_to_analyze)
        
-        ## section below only processes the first two timepoints, fixed above
-        ## Check to see if we have more than one plate
-        #plates = Df_final['Plate'].unique()
-        #print("unique plates:", plates)
-        #if len(plates) > 1:
-        #    # Take a subset and write
-        #    Df_final_write = Df_final[Df_final['Plate'] == plates[0]]
-        #    Df_final = Df_final[Df_final['Plate'] == plates[1]]
-        #    plates_to_analyze = WriteCurrent(Df_final_write, plates, cols_order_use, plates_to_analyze)
-
-    # Write Final
-    plates = Df_final['Plate'].unique()
-    print("final plates:", plates)
-    plates_to_analyze = WriteCurrent(Df_final, plates, cols_order_use, plates_to_analyze)
-
     return plates_to_analyze
 
 
