@@ -30,4 +30,5 @@ dependencies:
   - pyyaml
   - pip
   - pip:
+    - polars
     - ppca==0.0.4
