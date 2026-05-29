@@ -1,4 +1,4 @@
-# Intracellular_Organization_Dynamics
+# Intracellular Organization Dynamics
 
 ### Prerequisites and Major Dependencies
 * CellProfiler 2.3.1
