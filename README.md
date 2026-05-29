@@ -1,4 +1,4 @@
-# CellDeath
+# Intracellular_Organization_Dynamics
 
 ### Prerequisites and Major Dependencies
 * CellProfiler 2.3.1
@@ -11,15 +11,15 @@
 ### Project Setup
 Clone the repository
 ```
-$ git clone https://github.com/BooneAndrewsLab/CellDeath.git
-$ cd CellDeath
+$ git clone https://github.com/BooneAndrewsLab/Intracellular_Organization_Dynamics.git
+$ cd Intracellular_Organization_Dynamics
 ```
 
-Download [input test dataset][celldeath_test_images] and save it to 'test' folder
+Download [input test dataset][intracellular_organization_dynamics_test_images] and save it to 'test' folder
 ```
 $ mkdir test
-$ wget -P test https://thecellvision.org/celldeath/CellDeathProject_Demo_Images.tar.gz
-$ tar -xvzf test/CellDeathProject_Demo_Images.tar.gz --directory=test
+$ wget -P test https://thecellvision.org/intracellular_organization_dynamics/IntracellularOrganizationDynamics_Demo_Images.tar.gz
+$ tar -xvzf test/IntracellularOrganizationDynamics_Demo_Images.tar.gz --directory=test
 ```
 
 Create two conda environments for CellProfiler and Outlier Detection steps
@@ -51,7 +51,7 @@ $ cellprofiler -c -r -p <PATH_TO_BATCH_FILE> -o <CP_OUTPUT_FOLDER>
 
 
 Example:
-$ cellprofiler -c -r -p 1_CellSegmentation_and_FeatureExtraction_Pipeline.cppipe -i test/CellDeathProject_Demo_Images/2015_April_24_Atg8_R1 -o test/cellprofiler_results/ATG8_R1
+$ cellprofiler -c -r -p 1_CellSegmentation_and_FeatureExtraction_Pipeline.cppipe -i test/IntracellularOrganizationDynamics_Demo_Images/2015_April_24_Atg8_R1 -o test/cellprofiler_results/ATG8_R1
 $ cellprofiler -c -r -p test/cellprofiler_results/ATG8_R1/Batch_data.h5 -o test/cellprofiler_results/ATG8_R1
 ```
 _NOTE: The first cellprofiler command will generate a batch file (Batch_data.h5) in the output directory. This will be 
@@ -128,5 +128,5 @@ the commented-out list includes all screens that were included in the main study
 This software is licensed under the [BSD 3-Clause License][BSD3]. Please see the 
 ``LICENSE`` file for more details.
 
-[celldeath_test_images]: https://thecellvision.org/celldeath/CellDeathProject_Demo_Images.tar.gz
+[intracellular_organization_dynamics_test_images]: https://thecellvision.org/intracellular_organization_dynamics/Intracellular_Organization_Dynamics_Demo_Images.tar.gz
 [BSD3]: https://opensource.org/license/bsd-3-clause
