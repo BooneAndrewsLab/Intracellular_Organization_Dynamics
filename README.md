@@ -120,7 +120,7 @@ $ python 5_Determining_Half_Max.py -r test
 ```
 
 _NOTE: For demo purposes, only sample genes from Atg8 have been processed. If you are processing multiple screens,
-line 362 in 5_Determining_Half_Max.py will need to be altered to include the additional screens. For reference, 
+line 356 in 5_Determining_Half_Max.py will need to be altered to include the additional screens. For reference, 
 the commented-out list includes all screens that were included in the main study._
 
 
