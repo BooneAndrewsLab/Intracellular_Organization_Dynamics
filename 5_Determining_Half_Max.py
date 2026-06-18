@@ -321,7 +321,7 @@ def make_halfmax_plots(marker, input_dir, output_dir):
             plt.plot(0,0, 'w.', label='$R2$: %.4f' % R2)
             plt.plot(time, sigmoid_func(time, *char), 'r:', label='Logistic fit')
             plt.plot(time_9, penetrance_9, 'r.', markersize=15)
-            plt.plot(half_max, sigmoid_func(half_max, *char), 'k*', markersize=15, label='Half-max time')
+            plt.plot(half_max_calc, sigmoid_func(half_max_calc, *char), 'k*', markersize=15, label='Half-max time')
             plt.plot(time, penetrance, 'b-')
             plt.fill(np.concatenate([time, time[::-1]]),
                      np.concatenate([penetrance - 1.9600 * sigma,
