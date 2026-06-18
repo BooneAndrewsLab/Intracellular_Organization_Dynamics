@@ -21,10 +21,7 @@ args = parser.parse_args()
 
 
 ### ==================== FUNCTIONS FOR COMBINING OD OUTPUT FILES AND CALCULATING PENETRANCE ====================
-def merge_penetrance_files_per_rep(marker, results_dir, output_folder):
-    
-    if not os.path.exists(output_folder):
-        os.makedirs(output_folder)
+def merge_penetrance_files_per_rep(marker, results_dir):
     
     dfs = []
     for replicate in ["R1", "R2", "R3"]:
@@ -52,23 +49,21 @@ def merge_penetrance_files_per_rep(marker, results_dir, output_folder):
             .with_columns(pl.lit(marker).alias("Marker"))
             )
         dfs.append(rep_df)
-        rep_df.write_csv(f"{output_folder}/Combined_{marker}_{replicate}_OD_results.csv")
         
     
     # Combine and save dataframes for all replicates
-    (
+    combined_info_df = (
         pl
         .concat(dfs, how="vertical")
         .sort(["Marker", "Gene", "Timepoint", "Rep"])
-        .write_csv(f"{output_folder}/Combined_{marker}_All_OD_results.csv")
     )
+    return combined_info_df
 
 
-def calculate_combined_penenetrance(marker, input_dir, output_dir):
+def calculate_combined_penenetrance(marker, combined_info_df, output_dir):
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
     
-    combined_info_df = pl.read_csv(f"{input_dir}/Combined_{marker}_All_OD_results.csv")
     aggregated_df = (
         combined_info_df
         .group_by("Marker", "ORF", "Gene", "Timepoint")
@@ -82,12 +77,11 @@ def calculate_combined_penenetrance(marker, input_dir, output_dir):
     aggregated_df.write_csv(f"{output_dir}/{marker}_Overall_Penetrance_CellNum.csv")
     
 
-def get_all_marker_penetrances_spreadsheet(per_rep_dir, combined_dir):
+def get_all_marker_penetrances_spreadsheet(combined_info_df, combined_dir):
     
     # Get all per-rep data and rename each WT technical replicate
     per_rep_data = (
-        pl
-        .read_csv(f"{per_rep_dir}/*_All_OD_results.csv")
+        combined_info_df
         .select(["Rep", "Marker", "ORF", "Row", "Column", "Gene", "Timepoint", "Penetrance", "Num_cells"])
         .rename({"Num_cells": "Cell_Count", "ORF": "Strain"})
         .with_columns(
@@ -365,25 +359,24 @@ if __name__ == '__main__':
     
     # Getting final penetrance calculations
     for marker in markers:
-        merge_penetrance_files_per_rep(
+        combined_info_df = merge_penetrance_files_per_rep(
             marker=marker, 
-            results_dir=f"{results_dir}/OD_results", 
-            output_folder=f"{results_dir}/combined_output_results/per_rep_info")
+            results_dir=f"{results_dir}/OD_results")
         
         calculate_combined_penenetrance(
             marker=marker, 
-            input_dir=f"{results_dir}/combined_output_results/per_rep_info", 
-            output_dir=f"{results_dir}/combined_output_results/combined_info")
+            combined_info_df=combined_info_df,
+            output_dir=f"{results_dir}/combined_output_results")
 
     get_all_marker_penetrances_spreadsheet(
-        per_rep_dir=f"{results_dir}/combined_output_results/per_rep_info",
-        combined_dir=f"{results_dir}/combined_output_results/combined_info"
+        combined_info_df=combined_info_df,
+        combined_dir=f"{results_dir}/combined_output_results"
         )
     
     # Getting half-max calculations and plots
     for marker in markers:
         make_halfmax_plots(
             marker=marker,
-            input_dir=f"{results_dir}/combined_output_results/combined_info",
+            input_dir=f"{results_dir}/combined_output_results",
             output_dir=f"{results_dir}/half_max_analysis"
             )
