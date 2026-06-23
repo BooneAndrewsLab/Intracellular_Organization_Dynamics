@@ -215,7 +215,7 @@ def DoRegularPCA(df, var, output):
         exp_var.append(total_var)
         if total_var > var:
             num_PCs = i
-            np.savetxt(output['PCAExplainedVariance'], pca.explained_variance_ratio_, fmt='%0.4f')
+            # np.savetxt(output['PCAExplainedVariance'], pca.explained_variance_ratio_, fmt='%0.4f')
             break
 
     pca = PCA(n_components=num_PCs)
@@ -244,7 +244,7 @@ def DoProbabilisticPCA(df, var, output):
         exp_var_ratio.append(ppca.var_exp[i-1] - ppca.var_exp[i-2])
         if total_var > var:
             num_PCs = i
-            np.savetxt(output['PCAExplainedVariance'], exp_var_ratio, fmt='%0.4f')
+            # np.savetxt(output['PCAExplainedVariance'], exp_var_ratio, fmt='%0.4f')
             break
 
     ppca = PPCA()
@@ -273,7 +273,7 @@ def SavePCAFeatureCorr(df, num_PCs, feature_set, output):
         pca_feat_corr.loc[i,] = corr
 
     pca_feat_corr = pca_feat_corr.set_index([PCA_columns])
-    pca_feat_corr.to_csv(path_or_buf=output['PCAFeatureCorrelations'])
+    # pca_feat_corr.to_csv(path_or_buf=output['PCAFeatureCorrelations'])
 
 
 def DoPCA(df, output, var, feature_set):
@@ -301,7 +301,7 @@ def DoPCA(df, output, var, feature_set):
     plt.xlabel('Number of PCs')
     plt.ylabel('Total % of variance explained')
     plt.title('Number of PCs to be used = %d / %d features' % (num_PCs, df['Data'].shape[1]))
-    plt.savefig(output['PCAExplainedVariancePlot'])
+    # plt.savefig(output['PCAExplainedVariancePlot'])
 
     # Save PCA data
     SavePCAFeatureCorr(df, num_PCs, feature_set, output)
@@ -521,7 +521,7 @@ def PlotInAndOutliers(X, mask, filename, title):
     fig = plt.gcf()
     plt.legend(bbox_to_anchor=(1, 1.2), loc='upper left', frameon=True)
     plt.title(title, y=1.2)
-    fig.savefig(filename, bbox_inches='tight')
+    # fig.savefig(filename, bbox_inches='tight')
     fig.clf()
 
 
@@ -536,7 +536,7 @@ def PlotDistanceHistogram(X, dist, out_threshold, xlabel, output):
     plt.xlabel(xlabel)
     plt.ylabel('Number of cells')
     plt.title('Threshold: %.2f\nPercent Mutants: %.2f ' % (out_threshold, percent_mut))
-    plt.savefig(output)
+    # plt.savefig(output)
     fig.clf()
 
 
@@ -636,5 +636,5 @@ def PlotPenetrancePlot(df, output):
     cg.set_title('Penetrance over 24 hours')
     plt.legend(bbox_to_anchor=(1, 1), loc='upper left', frameon=True)
     fig = plt.gcf()
-    fig.savefig(output, bbox_inches='tight')
+    # fig.savefig(output, bbox_inches='tight')
     fig.clf()

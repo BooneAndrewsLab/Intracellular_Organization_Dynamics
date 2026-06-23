@@ -193,7 +193,7 @@ def SavePCAData(df, num_PCs, feature_loadings, feature_set, output):
     data_PCA_output_df.to_csv(path_or_buf=output['PCAAppliedData'], index=False)
 
     PCA_feature_coef = pd.DataFrame(feature_loadings, index=PCA_columns, columns=feature_set)
-    PCA_feature_coef.to_csv(path_or_buf=output['PCAFeatureLoadings'])
+    # PCA_feature_coef.to_csv(path_or_buf=output['PCAFeatureLoadings'])
 
 
 def DoRegularPCA(df, var, output):
@@ -210,7 +210,7 @@ def DoRegularPCA(df, var, output):
         exp_var.append(total_var)
         if total_var > var:
             num_PCs = i
-            np.savetxt(output['PCAExplainedVariance'], pca.explained_variance_ratio_, fmt='%0.4f')
+            # np.savetxt(output['PCAExplainedVariance'], pca.explained_variance_ratio_, fmt='%0.4f')
             break
 
     pca = PCA(n_components=num_PCs)
@@ -239,7 +239,7 @@ def DoProbabilisticPCA(df, var, output):
         exp_var_ratio.append(ppca.var_exp[i-1] - ppca.var_exp[i-2])
         if total_var > var:
             num_PCs = i
-            np.savetxt(output['PCAExplainedVariance'], exp_var_ratio, fmt='%0.4f')
+            # np.savetxt(output['PCAExplainedVariance'], exp_var_ratio, fmt='%0.4f')
             break
 
     ppca = PPCA()
@@ -268,7 +268,7 @@ def SavePCAFeatureCorr(df, num_PCs, feature_set, output):
         pca_feat_corr.loc[i,] = corr
 
     pca_feat_corr = pca_feat_corr.set_index([PCA_columns])
-    pca_feat_corr.to_csv(path_or_buf=output['PCAFeatureCorrelations'])
+    # pca_feat_corr.to_csv(path_or_buf=output['PCAFeatureCorrelations'])
 
 
 def DoPCA(df, output, var, feature_set):
@@ -297,7 +297,7 @@ def DoPCA(df, output, var, feature_set):
     plt.ylabel('Total % of variance explained')
     plt.title('Number of PCs to be used = %d / %d features' % (num_PCs, df['Data'].shape[1]))
     fig = plt.gcf()
-    fig.savefig(output['PCAExplainedVariancePlot'])
+    # fig.savefig(output['PCAExplainedVariancePlot'])
     fig.clf()
     plt.close(fig)
 
@@ -321,7 +321,7 @@ def SaveOutlierData(df, feature_set, output):
 
     data_output_df = pd.DataFrame(data=data_output, columns=data_columns)
     data_output_df = data_output_df.fillna('')
-    data_output_df.to_csv(path_or_buf=output['OutlierCellData'], index=False)
+    # data_output_df.to_csv(path_or_buf=output['OutlierCellData'], index=False)
 
 
 def OneClassSVMMethod(df, output, out_threshold, feature_set, kernel='rbf', gamma=0):
@@ -545,7 +545,7 @@ def PlotInAndOutliers(X, mask, filename, title):
     fig = plt.gcf()
     plt.legend(bbox_to_anchor=(1, 1.2), loc='upper left', frameon=True)
     plt.title(title, y=1.2)
-    fig.savefig(filename, bbox_inches='tight')
+    # fig.savefig(filename, bbox_inches='tight')
     fig.clf()
     plt.close(fig)
 
@@ -561,7 +561,7 @@ def PlotDistanceHistogram(X, dist, out_threshold, xlabel, output):
     plt.xlabel(xlabel)
     plt.ylabel('Number of cells')
     plt.title('Threshold: %.2f\nPercent Mutants: %.2f ' % (out_threshold, percent_mut))
-    plt.savefig(output)
+    # plt.savefig(output)
     fig.clf()
     plt.close(fig)
 
@@ -651,7 +651,7 @@ def PlotHeatmaps(df, output):
     cg.set_xticklabels(range(1, 25))
     cg.set_yticklabels(list(reversed(range(1,17))))
     fig = plt.gcf()
-    fig.savefig(output['PenetrancePlate'], bbox_inches='tight')
+    # fig.savefig(output['PenetrancePlate'], bbox_inches='tight')
     fig.clf()
     plt.close(fig)
 
@@ -670,7 +670,7 @@ def PlotPenetrance(df, orient, output):
     cg.set_title('Penetrance across the plate')
     plt.ylim(0, 100)
     fig = plt.gcf()
-    fig.savefig(output, bbox_inches='tight')
+    # fig.savefig(output, bbox_inches='tight')
     fig.clf()
     plt.close(fig)
 
@@ -733,7 +733,7 @@ def PlotSortedPenetrance(df, wt_strains, output_file, pos_controls_df=np.array([
                key.values()]
     fig = plt.gcf()
     plt.legend(handles=patches, labels=[label for _, label in key.values()], loc=2)
-    fig.savefig(output_file, bbox_inches='tight')
+    # fig.savefig(output_file, bbox_inches='tight')
     fig.clf()
     plt.close(fig)
 
@@ -768,7 +768,7 @@ def PlotROCandPR(PC, WT, output1, output2, output3):
     plt.title('Receiver operating characteristic')
     plt.legend(loc='lower right')
     fig = plt.gcf()
-    plt.savefig(output1)
+    # plt.savefig(output1)
     fig.clf()
     plt.close(fig)
 
@@ -783,7 +783,7 @@ def PlotROCandPR(PC, WT, output1, output2, output3):
     plt.ylabel('Precision')
     plt.title('Precision-Recall Curve')
     fig = plt.gcf()
-    plt.savefig(output2)
+    # plt.savefig(output2)
     fig.clf()
     plt.close(fig)
 
@@ -794,7 +794,7 @@ def PlotROCandPR(PC, WT, output1, output2, output3):
                                 'Precision': np.asarray(prec)})
     roc_numbers = roc_numbers[['Penetrance_Cutoff', 'TPR (Recall)', 'FPR', 'Precision']]
     roc_numbers = roc_numbers.sort_values('Penetrance_Cutoff', ascending=False)
-    roc_numbers.to_csv(path_or_buf=output3, index=False)
+    # roc_numbers.to_csv(path_or_buf=output3, index=False)
 
 
 def ConfusionMatrix(cm, classes, acc, label_actual, label_predicted, output_file):
@@ -824,7 +824,7 @@ def ConfusionMatrix(cm, classes, acc, label_actual, label_predicted, output_file
     plt.xlabel(label_predicted)
     plt.grid(False)
     fig = plt.gcf()
-    plt.savefig(output_file, bbox_inches='tight')
+    # plt.savefig(output_file, bbox_inches='tight')
     fig.clf()
     plt.close(fig)
 
@@ -875,7 +875,7 @@ def GetPosControlFile(df, pos_controls_file, wt_strains, cell_threshold, output,
     pos_controls_df = pos_controls_df.reset_index(drop=True)
     pos_controls_df = pos_controls_df[['ORF', 'Gene', 'Row', 'Column', 'Penetrance_bin', 'Predicted_Penetrance_bin',
                                        'Penetrance', 'P-value', 'Num_cells', 'Comments']]
-    pos_controls_df.to_csv(path_or_buf=output[output_files[0]], index=False)
+    # pos_controls_df.to_csv(path_or_buf=output[output_files[0]], index=False)
     PlotPenetranceAgreement(pos_controls_df, cell_threshold, output[output_files[1]])
 
     # Remove genes that are not screened for calculating accuracy
@@ -931,7 +931,7 @@ def PlotPenetranceAgreement(df, cell_threshold, output):
     plt.ylabel('Penetrance Bin')
     plt.title('Penetrance Agreement')
     fig = plt.gcf()
-    plt.savefig(output)
+    # plt.savefig(output)
     fig.clf()
     plt.close(fig)
 
