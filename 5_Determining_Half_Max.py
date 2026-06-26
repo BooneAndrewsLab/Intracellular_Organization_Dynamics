@@ -9,6 +9,7 @@ import polars as pl
 from scipy import stats
 from scipy.optimize import curve_fit
 import seaborn as sns
+import shutil
 from sklearn.metrics import r2_score
 from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.gaussian_process.kernels import RBF, ConstantKernel as C
@@ -198,16 +199,14 @@ def sigmoid_func_lag(inflect, max_f, min_f, slope_f):
 def sigmoid_func_char(time, penetrance, error):
     char, _ = curve_fit(f=sigmoid_func, xdata=time, ydata=penetrance, sigma=error,
                         bounds=([0,-np.inf,-np.inf,0], [24,np.inf,np.inf,np.inf]), method='trf')
-    half_max = char[0]
     maxx = sigmoid_func(24, *char)
     minn = sigmoid_func(0, *char)
     half_max_calc = sigmoid_func_inverse(np.mean([maxx, minn]), *char)
-    half_max_calc_min0 = sigmoid_func_inverse(np.mean([maxx, 0]), *char)
-    slope = sigmoid_func_deriv(half_max, *char)
+    slope = sigmoid_func_deriv(half_max_calc, *char)
     lag = sigmoid_func_lag(*char)
     R2 = r2_score(penetrance, sigmoid_func(time, *char))
     
-    return half_max, half_max_calc, half_max_calc_min0, maxx, minn, slope, lag, R2, char
+    return half_max_calc, maxx, minn, slope, lag, R2, char
 
 def gpr_smoothing(X_original, y_original):
     np.random.seed(1)
@@ -257,17 +256,17 @@ def fit_curve_gene_marker(gene, marker_df):
         error = [np.nanmax(error) if np.isnan(x) else x for x in error]
 
         try:
-            half_max, half_max_calc, half_max_calc_min0, maxx, minn, slope, lag, R2, char = sigmoid_func_char(time, penetrance, error)
+            half_max_calc, maxx, minn, slope, lag, R2, char = sigmoid_func_char(time, penetrance, error)
         except RuntimeError:
-            half_max, half_max_calc, half_max_calc_min0, maxx, minn, slope, lag, R2 = tuple(np.repeat(np.nan, 8))
+            half_max_calc, maxx, minn, slope, lag, R2 = tuple(np.repeat(np.nan, 8))
             char = tuple(np.repeat(np.nan, 4))
             
         if (not np.isnan(slope)) and (slope > 0) and (R2 > 0):
             values = (time_9, penetrance_9, time, penetrance, sigma)
-            func_values = (half_max, half_max_calc, half_max_calc_min0, maxx, minn, slope, lag, R2)
+            func_values = (half_max_calc, maxx, minn, slope, lag, R2)
         else:
             values = tuple(np.repeat(np.nan, 5))
-            func_values = tuple(np.repeat(np.nan, 8))
+            func_values = tuple(np.repeat(np.nan, 6))
             char = tuple(np.repeat(np.nan, 4))
 
     return values, func_values, char
@@ -289,9 +288,9 @@ def make_halfmax_plots(marker, input_dir, output_dir):
     if not os.path.exists(ouput_plots_folder):
         os.makedirs(ouput_plots_folder)
 
-    OUT_DF = pd.DataFrame(columns = ['Gene', 'Marker', 'Half_max', 'Half_max_calc', 'Half_max_calc_min0',
-                                     'Max', 'Min', 'Slope', 'Lag', 'R2',
-                                     'Func_inflect', 'Func_max', 'Func_min', 'Func_slope'])
+    OUT_DF = pd.DataFrame(columns=['Gene', 'Marker', 'Half_max_calc', 
+                                   'Max', 'Min', 'Slope', 'Lag', 'R2',
+                                   'Func_inflect', 'Func_max', 'Func_min', 'Func_slope'])
     this_row = 0
     for gene in genes:
         i=0
@@ -299,11 +298,13 @@ def make_halfmax_plots(marker, input_dir, output_dir):
 
         values, func_values, char = fit_curve_gene_marker(gene, marker_df)
         time_9, penetrance_9, time, penetrance, sigma = values
-        half_max, half_max_calc, half_max_calc_min0, maxx, minn, slope, lag, R2 = func_values
+
+        half_max_calc, maxx, minn, slope, lag, R2 = func_values
         inflect, max_f, min_f, slope_f = char
-        OUT_DF.loc[this_row, ] = [gene, marker, half_max, half_max_calc, half_max_calc_min0,
-                                  maxx, minn, slope, lag, R2,
-                                  inflect, max_f, min_f, slope_f]
+
+        OUT_DF.loc[this_row,] = [gene, marker, half_max_calc,
+                                 maxx, minn, slope, lag, R2,
+                                 inflect, max_f, min_f, slope_f]
         this_row += 1
 
         # Plot
@@ -355,6 +356,13 @@ if __name__ == '__main__':
 
     markers = ["Atg8"] # Only Atg8 screen here for demo purposes -- the commented out list above includes all screens used in the study
     results_dir = args.results_dir
+
+    # If rerunning script, delete old folders
+    if os.path.isdir(f"{results_dir}/combined_output_results"):
+        shutil.rmtree(f"{results_dir}/combined_output_results")
+
+    if os.path.isdir(f"{results_dir}/half_max_analysis"):
+        shutil.rmtree(f"{results_dir}/half_max_analysis")
 
     
     # Getting final penetrance calculations
